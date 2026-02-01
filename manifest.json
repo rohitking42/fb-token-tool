@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Karan Token Master 2026",
-  "version": "2.0",
-  "description": "Extract FB Token Automatically",
+  "name": "Karan Final Extractor",
+  "version": "3.0",
+  "description": "Force Extract EAAAA/EAAB Token",
   "permissions": [
     "cookies",
     "activeTab",

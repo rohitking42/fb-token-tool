@@ -1,38 +1,56 @@
-document.getElementById('getToken').addEventListener('click', () => {
-  document.getElementById('statusMsg').innerText = "Finding token...";
+document.getElementById('getTokenBtn').addEventListener('click', async () => {
+    const statusDiv = document.getElementById('status');
+    const resultBox = document.getElementById('tokenResult');
 
-  chrome.cookies.get({ url: "https://www.facebook.com", name: "xs" }, (cookie) => {
-    if (!cookie) {
-      document.getElementById('statusMsg').innerText = "Error: Please login to Facebook first!";
-      return;
-    }
+    statusDiv.innerText = "Finding Token... Please wait...";
+    resultBox.value = "";
 
-    // Ads Manager URL se token nikalne ka try krte hain
-    fetch('https://adsmanager.facebook.com/adsmanager/manage/campaigns', {
-        method: 'GET',
-    })
-    .then(response => response.text())
-    .then(text => {
-        // EAAB Token dhundho (regex se)
-        const match = text.match(/window\.local_access_token\s*=\s*"([^"]+)"/) ||
-                      text.match(/\"accessToken\":\"(EAAB[^\"]+)\"/);
+    try {
+        // Step 1: Get the EAAB Token from Ads Manager
+        const response = await fetch('https://adsmanager.facebook.com/adsmanager/manage/campaigns', {
+            method: 'GET',
+            headers: {
+                'User-Agent': navigator.userAgent
+            }
+        });
 
-        if (match && match[1]) {
-            document.getElementById('tokenBox').value = match[1];
-            document.getElementById('statusMsg').innerText = "Success! Token Found.";
+        const text = await response.text();
+        
+        // Regex to find EAAB token
+        const eaabMatch = text.match(/EAAB\w+/);
+        
+        if (eaabMatch) {
+            statusDiv.innerText = "Success! Token Found.";
+            statusDiv.style.color = "green";
+            resultBox.value = eaabMatch[0];
+            // Auto copy to clipboard
+            navigator.clipboard.writeText(eaabMatch[0]);
+            statusDiv.innerText += " (Copied!)";
         } else {
-            document.getElementById('statusMsg').innerText = "Token not found. Try refreshing FB page.";
-        }
-    })
-    .catch(err => {
-        document.getElementById('statusMsg').innerText = "Network Error. Check internet.";
-    });
-  });
-});
+            // If EAAB fails, try getting EAAAA token
+            statusDiv.innerText = "EAAB not found, trying EAAAA...";
+            
+            // Checking basic composer page for EAAAA
+            const composerRes = await fetch('https://business.facebook.com/content_management', {
+                 method: 'GET'
+            });
+            const composerText = await composerRes.text();
+            const eaaaaMatch = composerText.match(/EAAAA\w+/);
 
-document.getElementById('copyBtn').addEventListener('click', () => {
-  const tokenBox = document.getElementById('tokenBox');
-  tokenBox.select();
-  document.execCommand('copy');
+            if(eaaaaMatch) {
+                statusDiv.innerText = "Success! EAAAA Found.";
+                statusDiv.style.color = "green";
+                resultBox.value = eaaaaMatch[0];
+            } else {
+                throw new Error("Token not found inside source.");
+            }
+        }
+
+    } catch (error) {
+        statusDiv.innerText = "Error: Please login to Facebook first!";
+        statusDiv.style.color = "red";
+        console.error(error);
+    }
+});
   document.getElementById('statusMsg').innerText = "Copied to clipboard!";
 });

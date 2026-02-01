@@ -1,23 +1,27 @@
+html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>FB Token</title>
   <style>
-    body { width: 320px; padding: 10px; font-family: sans-serif; background: #f0f2f5; }
-    h3 { text-align: center; color: #1877f2; margin-top: 5px; }
-    textarea { width: 100%; height: 100px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; padding: 5px; font-size: 11px; }
-    button { width: 100%; padding: 10px; background: #42b72a; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 5px; }
-    button#copyBtn { background: #1877f2; }
-    .status { text-align: center; font-size: 12px; color: #666; margin-top: 5px; }
+    body { width: 320px; padding: 15px; font-family: sans-serif; background: #f0f2f5; }
+    h3 { margin: 0 0 15px; color: #1877f2; text-align: center; }
+    button {
+      width: 100%; padding: 12px; background: #1877f2; color: white;
+      border: none; border-radius: 6px; font-size: 16px; cursor: pointer; font-weight: bold;
+    }
+    button:hover { background: #166fe5; }
+    textarea {
+      width: 100%; height: 100px; margin-top: 15px; border: 1px solid #ccc;
+      border-radius: 6px; padding: 8px; font-size: 12px; resize: none;
+    }
+    #status { margin-top: 10px; font-size: 13px; text-align: center; color: #333; }
   </style>
 </head>
 <body>
-  <h3>Karan's Token Tool</h3>
-  <div class="status" id="statusMsg">Click 'Get Token' to start</div>
-  <textarea id="tokenBox" placeholder="Token will appear here..."></textarea>
-  <button id="getToken">Get Token</button>
-  <button id="copyBtn">Copy Token</button>
-
+  <h3>FB Token Extractor</h3>
+  <button id="getTokenBtn">GET TOKEN NOW</button>
+  <div id="status">Click button to extract</div>
+  <textarea id="tokenResult" placeholder="Token will appear here..."></textarea>
   <script src="popup.js"></script>
 </body>
 </html>

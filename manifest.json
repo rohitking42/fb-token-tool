@@ -1,13 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Karan Token Extractor",
-  "version": "1.0",
-  "description": "Get EAAB Token from Kiwi Browser",
+  "name": "Karan Token Master 2026",
+  "version": "2.0",
+  "description": "Extract FB Token Automatically",
   "permissions": [
     "cookies",
     "activeTab",
-    "scripting",
-    "clipboardWrite"
+    "scripting"
   ],
   "host_permissions": [
     "https://*.facebook.com/*",
